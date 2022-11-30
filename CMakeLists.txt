@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(Advent-of-code-2022)
 
-find_package(Eigen3 3.3 REQUIRED)
+find_package(Eigen3 3.4 REQUIRED)
 link_directories(${Eigen_INCLUDE_DIRS})
 
 # add_library(utils src/utils.cpp) target_include_directories(utils PUBLIC

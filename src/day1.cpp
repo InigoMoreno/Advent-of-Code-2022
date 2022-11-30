@@ -4,7 +4,7 @@ using namespace std;
 using namespace Eigen;
 
 int countAscending(ArrayXi vec) {
-  auto ascending = vec.tail(vec.size() - 1) > vec.head(vec.size() - 1);
+  auto ascending = vec(seq(1, last)) > vec(seq(0, last - 1));
   return ascending.count();
 }
 
@@ -24,7 +24,7 @@ protected:
     out << countAscending(vec);
   }
   virtual void part2(ostream& out) override {
-    out << countAscending(vec.segment(0, vec.size() - 2) + vec.segment(1, vec.size() - 2) + vec.segment(2, vec.size() - 2));
+    out << countAscending(vec(seq(0, last - 2)) + vec(seq(1, last - 1)) + vec(seq(2, last)));
   }
 };
 
