@@ -7,6 +7,7 @@
 #include <string>
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Core>
+#include <fmt/core.h>
 
 template <typename M>
 M eigenRead(std::istream &in, char separator)
@@ -32,18 +33,16 @@ class Day
 public:
     void run()
     {
-        std::cout << "Using input "
-                  << "../input" + std::to_string(day_number) + ".txt" << std::endl;
-        std::ifstream input("../input" + std::to_string(day_number) + ".txt");
-        parse(input);
+      std::ifstream input(fmt::format("../input{}.txt", day_number));
+      parse(input);
 
-        std::cout << "Part1: ";
-        part1(std::cout);
-        std::cout << std::endl;
+      std::cout << "Part1: ";
+      part1(std::cout);
+      std::cout << std::endl;
 
-        std::cout << "Part2: ";
-        part2(std::cout);
-        std::cout << std::endl;
+      std::cout << "Part2: ";
+      part2(std::cout);
+      std::cout << std::endl;
     };
     Day(int number) : day_number(number) {};
 

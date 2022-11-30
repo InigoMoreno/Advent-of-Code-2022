@@ -6,12 +6,12 @@ cmake_minimum_required(VERSION 3.16)
 project(Advent-of-code-2022)
 
 find_package(Eigen3 3.4 REQUIRED)
-link_directories(${Eigen_INCLUDE_DIRS})
+find_package(fmt REQUIRED)
 
 # add_library(utils src/utils.cpp) target_include_directories(utils PUBLIC
 # ${PROJECT_SOURCE_DIR}/include)
 
-set(LIBRARIES ${Eigen_LIBRARIES})
+set(LIBRARIES ${Eigen_LIBRARIES} fmt::fmt)
 
 function(add_day n)
   add_executable(day${n} src/day${n}.cpp)
