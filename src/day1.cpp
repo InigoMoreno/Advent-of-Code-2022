@@ -9,10 +9,10 @@ int countAscending(ArrayXi vec)
     return ascending.count();
 }
 
-class Day1 : public Day
+class Today : public Day
 {
 public:
-    Day1() : Day(1) {}
+    Today() : Day(1) {}
 
 protected:
     ArrayXi vec;
@@ -34,6 +34,6 @@ protected:
 
 int main()
 {
-    Day1 day1;
-    day1.run();
+    Today day;
+    day.run();
 }
