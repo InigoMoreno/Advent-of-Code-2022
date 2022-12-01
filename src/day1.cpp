@@ -1,4 +1,6 @@
 #include <utils.hpp>
+#include <algorithm>
+#include <fmt/ranges.h>
 
 using namespace std;
 using namespace Eigen;
@@ -14,17 +16,18 @@ public:
   }
 
 protected:
-  ArrayXi vec;
-  int N;
+  vector<int> sums;
 
   virtual void parse(istream& in) override {
-    vec = eigenRead<ArrayXi>(in, ' ');
+    while (in) sums.push_back(eigenRead<ArrayXi>(in, ' ').sum());
   }
   virtual void part1(ostream& out) override {
-    out << countAscending(vec);
+    out << *max_element(sums.begin(), sums.end());
   }
+
   virtual void part2(ostream& out) override {
-    out << countAscending(vec(seq(0, last - 2)) + vec(seq(1, last - 1)) + vec(seq(2, last)));
+    nth_element(sums.begin(), sums.begin()+2, sums.end(), std::greater<int>{});
+    out << sums[0] + sums[1] + sums[2];
   }
 };
 

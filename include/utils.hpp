@@ -9,13 +9,25 @@
 #include <eigen3/Eigen/Core>
 #include <fmt/core.h>
 
+std::vector<std::string> split(const std::string& target, char c) {
+  std::string temp;
+  std::stringstream stringstream{ target };
+  std::vector<std::string> result;
+
+  while (std::getline(stringstream, temp, c)) {
+    result.push_back(temp);
+  }
+
+  return result;
+}
+
 template <typename M>
 M eigenRead(std::istream &in, char separator)
 {
     std::string line;
     std::vector<typename M::Scalar> values;
     uint rows = 0;
-    while (std::getline(in, line))
+    while (std::getline(in, line) && line.size()>0)
     {
         std::stringstream lineStream(line);
         std::string cell;
@@ -33,6 +45,7 @@ class Day
 public:
     void run()
     {
+      fmt::print("../input{}.txt\n", day_number);
       std::ifstream input(fmt::format("../input{}.txt", day_number));
       parse(input);
 
