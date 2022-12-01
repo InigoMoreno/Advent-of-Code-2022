@@ -1,18 +1,17 @@
-#include <utils.hpp>
-#include <algorithm>
-#include <fmt/ranges.h>
 #include <absl/algorithm/container.h>
+#include <fmt/ranges.h>
+
+#include <algorithm>
+#include <utils.hpp>
 
 using namespace std;
 using namespace Eigen;
 
-
 class Today : public Day {
-public:
-  Today() : Day(1) {
-  }
+ public:
+  Today() : Day(1) {}
 
-protected:
+ protected:
   vector<int> sums;
 
   virtual void parse(istream& in) override {
@@ -23,7 +22,7 @@ protected:
   }
 
   virtual void part2(ostream& out) override {
-    absl::c_nth_element(sums, sums.begin()+2, std::greater<int>{});
+    absl::c_nth_element(sums, sums.begin() + 2, std::greater<int>{});
     out << sums[0] + sums[1] + sums[2];
   }
 };
