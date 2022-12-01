@@ -8,10 +8,15 @@ project(Advent-of-code-2022)
 find_package(Eigen3 3.4 REQUIRED)
 find_package(fmt REQUIRED)
 
-# add_library(utils src/utils.cpp) target_include_directories(utils PUBLIC
-# ${PROJECT_SOURCE_DIR}/include)
+include(FetchContent)
+FetchContent_Declare(
+  abseil-cpp 
+  GIT_REPOSITORY https://github.com/abseil/abseil-cpp
+  GIT_TAG lts_2022_06_23
+)
+FetchContent_MakeAvailable(abseil-cpp)
 
-set(LIBRARIES ${Eigen_LIBRARIES} fmt::fmt)
+set(LIBRARIES ${Eigen_LIBRARIES} fmt::fmt absl::base absl::synchronization absl::strings)
 
 function(add_day n)
   add_executable(day${n} src/day${n}.cpp)
