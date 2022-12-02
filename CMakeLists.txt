@@ -10,13 +10,13 @@ find_package(fmt REQUIRED)
 
 include(FetchContent)
 FetchContent_Declare(
-  abseil-cpp 
+  abseil-cpp
   GIT_REPOSITORY https://github.com/abseil/abseil-cpp
-  GIT_TAG lts_2022_06_23
-)
+  GIT_TAG lts_2022_06_23)
 FetchContent_MakeAvailable(abseil-cpp)
 
-set(LIBRARIES ${Eigen_LIBRARIES} fmt::fmt absl::base absl::synchronization absl::strings)
+set(LIBRARIES ${Eigen_LIBRARIES} fmt::fmt absl::base absl::synchronization
+              absl::strings)
 
 function(add_day n)
   add_executable(day${n} src/day${n}.cpp)
@@ -25,3 +25,4 @@ function(add_day n)
 endfunction()
 
 add_day(1)
+add_day(2)
