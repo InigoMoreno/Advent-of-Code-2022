@@ -26,3 +26,4 @@ endfunction()
 
 add_day(1)
 add_day(2)
+add_day(3)
