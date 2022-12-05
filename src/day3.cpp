@@ -25,12 +25,12 @@ class Today : public Day {
     }
   }
 
-  string find_intersection(string left, string right){
+  string find_intersection(string& left, string& right){
     set<char> left_set(left.begin(), left.end());
     set<char> right_set(right.begin(), right.end());
-    vector<char> res;
+    string res;
     c_set_intersection(left_set, right_set, back_inserter(res));
-    return string(res.begin(), res.end());
+    return res;
   }
 
   int score(char c){
@@ -51,7 +51,7 @@ class Today : public Day {
   virtual void part2(ostream& out) override {
     int sum = 0;
     for (int i = 0; i < sacks.size(); i += 3) {
-      string intersection_1_2 = find_intersection(sacks[i], sacks[i+1]);
+      string intersection_1_2 = find_intersection(sacks[i], sacks[i + 1]);
       string intersection = find_intersection(intersection_1_2, sacks[i + 2]);
       sum += score(intersection[0]);
     }
