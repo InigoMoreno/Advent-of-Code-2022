@@ -16,35 +16,47 @@ class Today : public Day {
   Today() : Day(3) {}
 
  protected:
-  vector<pair<string, string>> sacks;
+  vector<string> sacks;
 
   virtual void parse(istream& in) override {
     string line;
     while (in >> line) {
-      pair<string, string> split =
-          absl::StrSplit(line, absl::ByLength(line.size() / 2));
-      sacks.push_back(split);
+      sacks.push_back(line);
     }
   }
 
-  char find_union(pair<string, string>& sack){
-    set<char> left(sack.first.begin(), sack.first.end());
-    for (char c : sack.second) {
-      if (left.find(c) != left.end()) return c;
-    }
+  string find_intersection(string left, string right){
+    set<char> left_set(left.begin(), left.end());
+    set<char> right_set(right.begin(), right.end());
+    vector<char> res;
+    c_set_intersection(left_set, right_set, back_inserter(res));
+    return string(res.begin(), res.end());
+  }
+
+  int score(char c){
+    return c >= 'a' ? c - 'a' + 1 : c - 'A' + 27;
   }
 
   virtual void part1(ostream& out) override {
     int sum = 0;
     for (auto sack : sacks) {
-      char common = find_union(sack);
-      int score = common >= 'a' ? common - 'a' + 1 : common - 'A' + 27;
-      sum += score;
+      pair<string, string> split =
+          absl::StrSplit(sack, absl::ByLength(sack.size() / 2));
+      string intersection = find_intersection(split.first, split.second);
+      sum += score(intersection[0]);
     }
     out << sum;
   }
 
-  virtual void part2(ostream& out) override {}
+  virtual void part2(ostream& out) override {
+    int sum = 0;
+    for (int i = 0; i < sacks.size(); i += 3) {
+      string intersection_1_2 = find_intersection(sacks[i], sacks[i+1]);
+      string intersection = find_intersection(intersection_1_2, sacks[i + 2]);
+      sum += score(intersection[0]);
+    }
+    out << sum;
+  }
 };
 
 int main() {
