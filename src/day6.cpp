@@ -24,7 +24,16 @@ class Today : public Day {
     }
   }
 
-  virtual void part2(ostream& out) override {}
+  virtual void part2(ostream& out) override {
+    uint N = 14;
+    for (int i = 0; i < data.size() - N; i++) {
+      string substring = data.substr(i, N);
+      if (set<char>(substring.begin(), substring.end()).size() == N) {
+        out << i + N;
+        break;
+      }
+    }
+  }
 };
 
 int main() {
