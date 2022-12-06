@@ -18,14 +18,8 @@ FetchContent_MakeAvailable(abseil-cpp)
 set(LIBRARIES ${Eigen_LIBRARIES} fmt::fmt absl::base absl::synchronization
               absl::strings)
 
-function(add_day n)
+foreach(n RANGE 1 5)
   add_executable(day${n} src/day${n}.cpp)
   target_include_directories(day${n} PUBLIC ${PROJECT_SOURCE_DIR}/include)
   target_link_libraries(day${n} PRIVATE ${LIBRARIES})
-endfunction()
-
-add_day(1)
-add_day(2)
-add_day(3)
-add_day(4)
-add_day(5)
+endforeach()
