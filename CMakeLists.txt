@@ -8,6 +8,7 @@ project(Advent-of-code-2022)
 find_package(Eigen3 3.4 REQUIRED)
 find_package(fmt REQUIRED)
 
+set(ABSL_PROPAGATE_CXX_STD ON)
 include(FetchContent)
 FetchContent_Declare(
   abseil-cpp

@@ -55,7 +55,6 @@ M eigenRead(std::istream &in, char separator) {
 class Day {
  public:
   void run() {
-    fmt::print("../input/input{}.txt\n", day_number);
     std::ifstream input(fmt::format("../input/input{}.txt", day_number));
     parse(input);
 

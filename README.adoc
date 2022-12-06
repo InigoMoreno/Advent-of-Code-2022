@@ -1,0 +1,43 @@
+= Advent-of-Code-2022
+Code for <https://adventofcode.com/2022>
+
+== Requirements
+
+[source,bash]
+----
+   sudo apt-get install libeigen3-dev libfmt-dev
+----
+
+== Installation
+
+[source,bash]
+----
+    git clone https://github.com/InigoMoreno/Advent-of-Code-2022/
+    cd Advent-of-Code-2022
+    mkdir build
+    cd build
+    cmake ..
+    make
+----
+
+== Testing
+
+Run executables directly from the build directory:
+
+[source,bash]
+----
+    cd build
+    find day** -print -exec  ./{} \;
+----
+
+== Benchmark
+
+Benchmark with https://github.com/sharkdp/hyperfine[hyperfine]:
+
+[source,bash]
+----
+    cd build
+    hyperfine ./day* -N --export-asciidoc ../hyperfine.adoc
+----
+
+include::hyperfine.adoc[]
