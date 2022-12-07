@@ -12,7 +12,7 @@ class FileOrDir : public std::enable_shared_from_this<FileOrDir> {
   bool is_dir;
   string name;
   vector<shared_ptr<FileOrDir>> children;
-  shared_ptr<FileOrDir> parent;
+  weak_ptr<FileOrDir> parent;
 
   FileOrDir() : is_dir(true), name("/") {}
 
@@ -35,12 +35,12 @@ class FileOrDir : public std::enable_shared_from_this<FileOrDir> {
       string a, b;
       in >> a >> b;
       shared_ptr<FileOrDir> child = make_shared<FileOrDir>(a, b);
-      child->parent = shared_from_this();
+      child->parent = weak_from_this();
       children.push_back(child);
     }
   }
 
-  shared_ptr<FileOrDir> cd(string where) {
+  weak_ptr<FileOrDir> cd(string where) {
     if (where == "..") return parent;
     for (auto child : children)
       if (child->is_dir and where == child->name) return child;
@@ -82,7 +82,7 @@ class Today : public Day {
       } else if (command == "cd") {
         string where;
         in >> where;
-        cwd = cwd->cd(where);
+        cwd = cwd->cd(where).lock();
       }
     }
   }
