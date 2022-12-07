@@ -9,6 +9,8 @@ Code for <https://adventofcode.com/2022>
    sudo apt-get install libeigen3-dev libfmt-dev
 ----
 
+To use new_day.sh, also download the https://github.com/GreenLightning/advent-of-code-downloader/releases[advent-of-code-downloader] and move its binary to /usr/bin or somewhere on the bash path.
+
 == Installation
 
 [source,bash]
