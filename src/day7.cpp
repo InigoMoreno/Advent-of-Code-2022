@@ -40,8 +40,8 @@ class FileOrDir : public std::enable_shared_from_this<FileOrDir> {
     }
   }
 
-  weak_ptr<FileOrDir> cd(string where) {
-    if (where == "..") return parent;
+  shared_ptr<FileOrDir> cd(string where) {
+    if (where == "..") return parent.lock();
     for (auto child : children)
       if (child->is_dir and where == child->name) return child;
   }
@@ -82,7 +82,7 @@ class Today : public Day {
       } else if (command == "cd") {
         string where;
         in >> where;
-        cwd = cwd->cd(where).lock();
+        cwd = cwd->cd(where);
       }
     }
   }
