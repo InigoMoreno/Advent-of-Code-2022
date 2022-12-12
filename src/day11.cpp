@@ -5,9 +5,10 @@ using namespace std;
 using namespace Eigen;
 using namespace absl;
 
+typedef unsigned long long int T;
 class Monkey {
  public:
-  queue<uint> items;
+  queue<T> items;
   string field1, field2;
   char operation;
   uint test, monkey_if, monkey_else;
@@ -25,14 +26,14 @@ class Monkey {
     monkey_else = stoi(split[5].substr(28));
   }
 
-  uint inspect() {
-    uint item = items.front();
+  T inspect() {
+    T item = items.front();
     items.pop();
     inspected_times++;
 
     // Apply operation
-    uint value1 = field1 == "old" ? item : stoi(field1);
-    uint value2 = field2 == "old" ? item : stoi(field2);
+    T value1 = field1 == "old" ? item : stoi(field1);
+    T value2 = field2 == "old" ? item : stoi(field2);
     if (operation == '*') item = value1 * value2;
     if (operation == '+') item = value1 + value2;
 
@@ -63,27 +64,52 @@ class Today : public Day {
   }
 
   virtual void part1(ostream& out) override {
+    vector<Monkey> monkeys_copy(monkeys);
     for (int i = 0; i < 20; i++) {
-      for (Monkey& monkey : monkeys) {
+      for (Monkey& monkey : monkeys_copy) {
         while (!monkey.items.empty()) {
-          uint item = monkey.inspect();
+          auto item = monkey.inspect();
           item /= 3;
           bool divisible = item % monkey.test == 0;
-          monkeys[divisible ? monkey.monkey_if : monkey.monkey_else].items.push(
-              item);
+          monkeys_copy[divisible ? monkey.monkey_if : monkey.monkey_else]
+              .items.push(item);
         }
       }
     }
 
     vector<uint> inspected_times;
-    for (const Monkey& monkey : monkeys) {
+    for (const Monkey& monkey : monkeys_copy) {
       inspected_times.push_back(monkey.inspected_times);
     }
     c_sort(inspected_times, greater<uint>());
     out << inspected_times[0] * inspected_times[1];
   }
 
-  virtual void part2(ostream& out) override {}
+  virtual void part2(ostream& out) override {
+    vector<Monkey> monkeys_copy(monkeys);
+
+    T common_factor = 1;
+    for (Monkey& monkey : monkeys_copy) common_factor *= monkey.test;
+
+    for (int i = 0; i < 10000; i++) {
+      for (Monkey& monkey : monkeys_copy) {
+        while (!monkey.items.empty()) {
+          auto item = monkey.inspect();
+          item %= common_factor;
+          bool divisible = item % monkey.test == 0;
+          monkeys_copy[divisible ? monkey.monkey_if : monkey.monkey_else]
+              .items.push(item);
+        }
+      }
+    }
+
+    vector<T> inspected_times;
+    for (const Monkey& monkey : monkeys_copy) {
+      inspected_times.push_back(monkey.inspected_times);
+    }
+    c_sort(inspected_times, greater<T>());
+    out << inspected_times[0] * inspected_times[1];
+  }
 };
 
 int main() {
