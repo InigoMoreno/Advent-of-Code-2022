@@ -36,22 +36,26 @@ class Today : public Day {
   bool pull(const pos& head, pos& tail) {
     if (head.x - tail.x > 1) {
       tail.x++;
-      tail.y = head.y;
+      if (tail.y > head.y) tail.y--;
+      if (tail.y < head.y) tail.y++;
       return true;
     }
     if (head.x - tail.x < -1) {
       tail.x--;
-      tail.y = head.y;
+      if (tail.y > head.y) tail.y--;
+      if (tail.y < head.y) tail.y++;
       return true;
     }
     if (head.y - tail.y > 1) {
       tail.y++;
-      tail.x = head.x;
+      if (tail.x > head.x) tail.x--;
+      if (tail.x < head.x) tail.x++;
       return true;
     }
     if (head.y - tail.y < -1) {
       tail.y--;
-      tail.x = head.x;
+      if (tail.x > head.x) tail.x--;
+      if (tail.x < head.x) tail.x++;
       return true;
     }
     return false;
@@ -86,16 +90,6 @@ class Today : public Day {
         }
         visited.insert(snake[N]);
       }
-    }
-    cout << endl;
-    for (int y = 16; y >= -5; y--) {
-      for (int x = -11; x <= 15; x++) {
-        if (visited.find(pos({x, y})) != visited.end())
-          cout << '#';
-        else
-          cout << '.';
-      }
-      cout << endl;
     }
     return visited.size();
   }
