@@ -57,7 +57,7 @@ class Today : public Day {
     return false;
   }
 
-  void move(pos& head, char dir){
+  void move(pos& head, char dir) {
     switch (dir) {
       case 'R':
         head.x++;
@@ -74,7 +74,7 @@ class Today : public Day {
     }
   }
 
-  virtual void part1(ostream& out) override {
+  int generic_part(int N) {
     set<pos> visited;
     pos head = {0, 0};
     pos tail = {0, 0};
@@ -86,10 +86,12 @@ class Today : public Day {
         visited.insert(tail);
       }
     }
-    out << visited.size();
+    return visited.size();
   }
 
-  virtual void part2(ostream& out) override {}
+  virtual void part1(ostream& out) override { out << generic_part(1); }
+
+  virtual void part2(ostream& out) override { out << generic_part(10); }
 };
 
 int main() {
