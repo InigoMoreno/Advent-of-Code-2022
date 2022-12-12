@@ -4,6 +4,7 @@
 #include <absl/strings/str_split.h>
 #include <fmt/core.h>
 #include <fmt/ranges.h>
+#include <fmt/ostream.h>
 
 #include <algorithm>
 #include <eigen3/Eigen/Core>
@@ -55,7 +56,7 @@ M eigenRead(std::istream &in, char separator) {
 class Day {
  public:
   std::string input_path = "../input/input{}.txt";
-  
+
   void run() {
     std::ifstream input(fmt::format(input_path, day_number));
     parse(input);
