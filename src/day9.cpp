@@ -17,7 +17,7 @@ class Today : public Day {
     int x;
     int y;
     bool operator<(const pos& other) const {
-      return (x < other.x) or (x == other.x and y < other.y);
+      return std::tie(x, y) < std::tie(other.x, other.y);
     }
     friend std::ostream& operator<<(std::ostream& os, const pos& d) {
       return os << '(' << d.x << ',' << d.x << ')';
