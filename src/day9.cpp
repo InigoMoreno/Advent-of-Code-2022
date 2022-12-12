@@ -17,7 +17,7 @@ class Today : public Day {
     int x;
     int y;
     bool operator<(const pos& other) const {
-      return (x < other.x) or (x==other.x and y < other.y);
+      return (x < other.x) or (x == other.x and y < other.y);
     }
     friend std::ostream& operator<<(std::ostream& os, const pos& d) {
       return os << '(' << d.x << ',' << d.x << ')';
@@ -32,6 +32,31 @@ class Today : public Day {
     }
   }
 
+  // Pull tail towards head
+  bool pull(const pos& head, pos& tail) {
+    if (head.x - tail.x > 1) {
+      tail.x++;
+      tail.y = head.y;
+      return true;
+    }
+    if (head.x - tail.x < -1) {
+      tail.x--;
+      tail.y = head.y;
+      return true;
+    }
+    if (head.y - tail.y > 1) {
+      tail.y++;
+      tail.x = head.x;
+      return true;
+    }
+    if (head.y - tail.y < -1) {
+      tail.y--;
+      tail.x = head.x;
+      return true;
+    }
+    return false;
+  }
+
   virtual void part1(ostream& out) override {
     set<pos> visited;
     pos head = {0, 0};
@@ -42,33 +67,18 @@ class Today : public Day {
         switch (m.dir) {
           case 'R':
             head.x++;
-            if (head.x - tail.x > 1) {
-              tail.x++;
-              tail.y = head.y;
-            }
             break;
           case 'L':
             head.x--;
-            if (head.x - tail.x < -1) {
-              tail.x--;
-              tail.y = head.y;
-            }
             break;
           case 'U':
             head.y++;
-            if (head.y - tail.y > 1) {
-              tail.y++;
-              tail.x = head.x;
-            }
             break;
           case 'D':
             head.y--;
-            if (head.y - tail.y < -1) {
-              tail.y--;
-              tail.x = head.x;
-            }
             break;
         }
+        pull(head, tail);
         visited.insert(tail);
       }
     }
@@ -80,6 +90,6 @@ class Today : public Day {
 
 int main() {
   Today day;
-  // day.input_path = "../input/input{}-example.txt";
+  day.input_path = "../input/input{}-example.txt";
   day.run();
 }
