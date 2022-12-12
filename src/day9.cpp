@@ -76,22 +76,33 @@ class Today : public Day {
 
   int generic_part(int N) {
     set<pos> visited;
-    pos head = {0, 0};
-    pos tail = {0, 0};
-    visited.insert(tail);
+    vector<pos> snake(N + 1, {0, 0});
+    visited.insert(snake[N]);
     for (motion m : motions) {
       while (m.times--) {
-        move(head, m.dir);
-        pull(head, tail);
-        visited.insert(tail);
+        move(snake[0], m.dir);
+        for (int i = 1; i <= N; i++) {
+          pull(snake[i - 1], snake[i]);
+        }
+        visited.insert(snake[N]);
       }
+    }
+    cout << endl;
+    for (int y = 16; y >= -5; y--) {
+      for (int x = -11; x <= 15; x++) {
+        if (visited.find(pos({x, y})) != visited.end())
+          cout << '#';
+        else
+          cout << '.';
+      }
+      cout << endl;
     }
     return visited.size();
   }
 
   virtual void part1(ostream& out) override { out << generic_part(1); }
 
-  virtual void part2(ostream& out) override { out << generic_part(10); }
+  virtual void part2(ostream& out) override { out << generic_part(9); }
 };
 
 int main() {
