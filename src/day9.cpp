@@ -57,6 +57,23 @@ class Today : public Day {
     return false;
   }
 
+  void move(pos& head, char dir){
+    switch (dir) {
+      case 'R':
+        head.x++;
+        break;
+      case 'L':
+        head.x--;
+        break;
+      case 'U':
+        head.y++;
+        break;
+      case 'D':
+        head.y--;
+        break;
+    }
+  }
+
   virtual void part1(ostream& out) override {
     set<pos> visited;
     pos head = {0, 0};
@@ -64,20 +81,7 @@ class Today : public Day {
     visited.insert(tail);
     for (motion m : motions) {
       while (m.times--) {
-        switch (m.dir) {
-          case 'R':
-            head.x++;
-            break;
-          case 'L':
-            head.x--;
-            break;
-          case 'U':
-            head.y++;
-            break;
-          case 'D':
-            head.y--;
-            break;
-        }
+        move(head, m.dir);
         pull(head, tail);
         visited.insert(tail);
       }
@@ -90,6 +94,6 @@ class Today : public Day {
 
 int main() {
   Today day;
-  day.input_path = "../input/input{}-example.txt";
+  // day.input_path = "../input/input{}-example.txt";
   day.run();
 }
