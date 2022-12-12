@@ -15,7 +15,7 @@ if [[ ! -f "input/input${DAY}.txt" ]]; then
 fi
 
 if [[ ! -f "input/input${DAY}-example.txt" ]]; then
-    curl --silent "https://adventofcode.com/${YEAR}/day/${DAY}" | xmllint --html --xpath "(//p[contains(., 'example')])[1]/following-sibling::pre[1]/code/text()" - > "input/input${DAY}-example.txt"
+    curl --silent "https://adventofcode.com/${YEAR}/day/${DAY}" | sed -e "s|<em>||" | sed -e "s|</em>||" | xmllint --html --xpath "(//p[contains(., 'example')])[1]/following-sibling::pre[1]/code/text()" - > "input/input${DAY}-example.txt"
 fi
 
 xdg-open "https://adventofcode.com/${YEAR}/day/${DAY}"
