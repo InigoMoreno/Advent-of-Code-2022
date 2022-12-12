@@ -16,4 +16,8 @@ if [[ ! -f "input/input${DAY}.txt" ]]; then
     aocdl -output "input/input${DAY}.txt" -day "${DAY}" -year "${YEAR}"
 fi
 
+if [[ ! -f "input/input${DAY}-example.txt" ]]; then
+    curl --silent "https://adventofcode.com/${YEAR}/day/${DAY}" | xmllint --html --xpath "(//p[contains(., 'example')])[1]/following-sibling::pre[1]/code/text()" - > "input/input${DAY}-example.txt"
+fi
+
 xdg-open "https://adventofcode.com/${YEAR}/day/${DAY}"
