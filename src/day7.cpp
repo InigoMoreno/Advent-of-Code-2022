@@ -87,13 +87,9 @@ class Today : public Day {
     }
   }
 
-  virtual void part1(ostream& out) override {
-    out << root->sum_sizes_at_most_N(100000);
-  }
+  virtual void part1(ostream& out) override { out << root->sum_sizes_at_most_N(100000); }
 
-  virtual void part2(ostream& out) override {
-    out << root->min_size_at_least_N(root->size() - size_t(40000000));
-  }
+  virtual void part2(ostream& out) override { out << root->min_size_at_least_N(root->size() - size_t(40000000)); }
 };
 
 int main() {

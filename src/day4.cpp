@@ -20,31 +20,23 @@ class Today : public Day {
   }
 
   // True if range a fully contains range b
-  bool fully_contains(range a, range b) {
-    return a.first<=b.first and b.second<=a.second;
-  }
+  bool fully_contains(range a, range b) { return a.first <= b.first and b.second <= a.second; }
 
   virtual void part1(ostream& out) override {
     uint count = 0;
     for (auto assignment : assignments) {
-      if (fully_contains(assignment.first, assignment.second) or
-          fully_contains(assignment.second, assignment.first))
-        count += 1;
+      if (fully_contains(assignment.first, assignment.second) or fully_contains(assignment.second, assignment.first)) count += 1;
     }
     out << count;
   }
 
   // True if range a overlaps range b (with a starting before than b)
-  bool overlaps(range a, range b) {
-    return a.first <= b.first and b.first <= a.second;
-  }
+  bool overlaps(range a, range b) { return a.first <= b.first and b.first <= a.second; }
 
   virtual void part2(ostream& out) override {
     uint count = 0;
     for (auto assignment : assignments) {
-      if (overlaps(assignment.first, assignment.second) or
-          overlaps(assignment.second, assignment.first))
-        count += 1;
+      if (overlaps(assignment.first, assignment.second) or overlaps(assignment.second, assignment.first)) count += 1;
     }
     out << count;
   }

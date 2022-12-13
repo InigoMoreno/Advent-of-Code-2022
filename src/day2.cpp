@@ -25,13 +25,11 @@ class Today : public Day {
 
   virtual void parse(istream& in) override {
     char a, b;
-    while (in >> a >> b)
-      strategy.push_back(tuple<uint, uint>(a - 'A', b - 'X'));
+    while (in >> a >> b) strategy.push_back(tuple<uint, uint>(a - 'A', b - 'X'));
   }
   virtual void part1(ostream& out) override {
     uint score = 0;
-    for (tuple<char, char> round : strategy)
-      score += points[get<0>(round)][get<1>(round)] + get<1>(round) + 1;
+    for (tuple<char, char> round : strategy) score += points[get<0>(round)][get<1>(round)] + get<1>(round) + 1;
     out << score;
   }
 
@@ -44,8 +42,7 @@ class Today : public Day {
 
   virtual void part2(ostream& out) override {
     uint score = 0;
-    for (tuple<char, char> round : strategy)
-      score += get<1>(round) * 3 + wdl_move[get<0>(round)][get<1>(round)] + 1;
+    for (tuple<char, char> round : strategy) score += get<1>(round) * 3 + wdl_move[get<0>(round)][get<1>(round)] + 1;
     out << score;
   }
 };

@@ -18,9 +18,7 @@ class Today : public Day {
   virtual void parse(istream& in) override {
     while (in) sums.push_back(eigenRead<ArrayXi>(in, ' ').sum());
   }
-  virtual void part1(ostream& out) override {
-    out << *c_max_element(sums);
-  }
+  virtual void part1(ostream& out) override { out << *c_max_element(sums); }
 
   virtual void part2(ostream& out) override {
     c_nth_element(sums, sums.begin() + 2, greater<int>{});

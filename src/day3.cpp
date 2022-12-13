@@ -25,7 +25,7 @@ class Today : public Day {
     }
   }
 
-  string find_intersection(string& left, string& right){
+  string find_intersection(string& left, string& right) {
     set<char> left_set(left.begin(), left.end());
     set<char> right_set(right.begin(), right.end());
     string res;
@@ -33,15 +33,12 @@ class Today : public Day {
     return res;
   }
 
-  int score(char c){
-    return c >= 'a' ? c - 'a' + 1 : c - 'A' + 27;
-  }
+  int score(char c) { return c >= 'a' ? c - 'a' + 1 : c - 'A' + 27; }
 
   virtual void part1(ostream& out) override {
     int sum = 0;
     for (auto sack : sacks) {
-      pair<string, string> split =
-          absl::StrSplit(sack, absl::ByLength(sack.size() / 2));
+      pair<string, string> split = absl::StrSplit(sack, absl::ByLength(sack.size() / 2));
       string intersection = find_intersection(split.first, split.second);
       sum += score(intersection[0]);
     }

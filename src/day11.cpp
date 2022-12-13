@@ -41,10 +41,8 @@ class Monkey {
   }
 
   friend std::ostream& operator<<(std::ostream& os, const Monkey& d) {
-    return os << fmt::format(
-               "{{items.front():{}, operation:{}{}{}, test:{}, monkeys:{}:{}}}",
-               d.items.front(), d.field1, d.operation, d.field2, d.test,
-               d.monkey_if, d.monkey_else);
+    return os << fmt::format("{{items.front():{}, operation:{}{}{}, test:{}, monkeys:{}:{}}}", d.items.front(), d.field1, d.operation, d.field2, d.test,
+                             d.monkey_if, d.monkey_else);
   }
 };
 
@@ -57,8 +55,7 @@ class Today : public Day {
 
   virtual void parse(istream& in) override {
     string file = streamToString(in);
-    for (string monkey_data :
-         (vector<string>)absl::StrSplit(file, "\n\n", absl::SkipWhitespace())) {
+    for (string monkey_data : (vector<string>)absl::StrSplit(file, "\n\n", absl::SkipWhitespace())) {
       monkeys.push_back(Monkey(monkey_data));
     };
   }
@@ -71,8 +68,7 @@ class Today : public Day {
           auto item = monkey.inspect();
           item /= 3;
           bool divisible = item % monkey.test == 0;
-          monkeys_copy[divisible ? monkey.monkey_if : monkey.monkey_else]
-              .items.push(item);
+          monkeys_copy[divisible ? monkey.monkey_if : monkey.monkey_else].items.push(item);
         }
       }
     }
@@ -97,8 +93,7 @@ class Today : public Day {
           auto item = monkey.inspect();
           item %= common_factor;
           bool divisible = item % monkey.test == 0;
-          monkeys_copy[divisible ? monkey.monkey_if : monkey.monkey_else]
-              .items.push(item);
+          monkeys_copy[divisible ? monkey.monkey_if : monkey.monkey_else].items.push(item);
         }
       }
     }

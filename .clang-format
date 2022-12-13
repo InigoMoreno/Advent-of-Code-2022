@@ -16,7 +16,7 @@ BasedOnStyle: Google
 # BreakBeforeTernaryOperators: false
 # BreakConstructorInitializersBeforeComma: true
 # BinPackParameters: true
-# ColumnLimit: 160
+ColumnLimit: 160
 # ConstructorInitializerAllOnOneLineOrOnePerLine: true
 # DerivePointerBinding: false
 # PointerBindsToType: true

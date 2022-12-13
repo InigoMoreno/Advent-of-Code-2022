@@ -81,7 +81,7 @@ class Today : public Day {
   }
 
   virtual void part2(ostream& out) override {
-    int max_score=1;
+    int max_score = 1;
     vector<vector<uint>> score(N, vector<uint>(N, 1));
     for (int i = 1; i < N - 1; i++) {
       for (int j = 1; j < N - 1; j++) {
@@ -107,7 +107,7 @@ class Today : public Day {
         if (k >= N) k--;
         score[i][j] *= k - i;
 
-        if (score[i][j]>max_score){
+        if (score[i][j] > max_score) {
           max_score = score[i][j];
         }
       }

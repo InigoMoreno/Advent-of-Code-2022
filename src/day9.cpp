@@ -13,16 +13,6 @@ class Today : public Day {
     char dir;
     uint times;
   };
-  struct pos {
-    int x;
-    int y;
-    bool operator<(const pos& other) const {
-      return std::tie(x, y) < std::tie(other.x, other.y);
-    }
-    friend std::ostream& operator<<(std::ostream& os, const pos& d) {
-      return os << '(' << d.x << ',' << d.x << ')';
-    }
-  };
   vector<motion> motions;
 
   virtual void parse(istream& in) override {

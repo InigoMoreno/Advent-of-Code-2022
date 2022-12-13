@@ -15,9 +15,8 @@ class Today : public Day {
 
   virtual void part1(ostream& out) override {
     for (int i = 3; i < data.size(); i++) {
-      if (data[i] != data[i - 1] and data[i] != data[i - 2] and
-          data[i] != data[i - 3] and data[i - 1] != data[i - 2] and
-          data[i - 1] != data[i - 3] and data[i - 2] != data[i - 3]) {
+      if (data[i] != data[i - 1] and data[i] != data[i - 2] and data[i] != data[i - 3] and data[i - 1] != data[i - 2] and data[i - 1] != data[i - 3] and
+          data[i - 2] != data[i - 3]) {
         out << i + 1;
         break;
       }
