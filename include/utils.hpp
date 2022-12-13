@@ -3,8 +3,8 @@
 #include <absl/algorithm/container.h>
 #include <absl/strings/str_split.h>
 #include <fmt/core.h>
-#include <fmt/ranges.h>
 #include <fmt/ostream.h>
+#include <fmt/ranges.h>
 
 #include <algorithm>
 #include <eigen3/Eigen/Core>
@@ -15,6 +15,27 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <queue>
+
+struct pos {
+  int x;
+  int y;
+  bool operator<(const pos &other) const {
+    return std::tie(x, y) < std::tie(other.x, other.y);
+  }
+  pos operator+(const pos &other) const {
+    return pos({x + other.x, y + other.y});
+  }
+  pos operator-(const pos &other) const {
+    return pos({x - other.x, y - other.y});
+  }
+  friend std::ostream &operator<<(std::ostream &os, const pos &d) {
+    return os << '(' << d.x << ',' << d.y << ')';
+  }
+  bool operator==(const pos &other) const {
+    return std::tie(x, y) == std::tie(other.x, other.y);
+  }
+};
 
 std::vector<std::string> split(const std::string &target, char c) {
   std::string temp;
