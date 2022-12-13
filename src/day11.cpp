@@ -5,11 +5,23 @@ using namespace std;
 using namespace Eigen;
 using namespace absl;
 
-typedef unsigned long long int T;
+typedef unsigned long int T;
+
+class Field {
+ public:
+  T value;
+  T get(T old) { return value==0 ? old : value; }
+  friend istream& operator>>(istream& in, Field& D) {
+    string s;
+    in >> s;
+    D.value = s == "old" ? 0 : stoi(s);
+  }
+};
+
 class Monkey {
  public:
   queue<T> items;
-  string field1, field2;
+  Field field1, field2;
   char operation;
   uint test, monkey_if, monkey_else;
   uint inspected_times = 0;
@@ -32,18 +44,16 @@ class Monkey {
     inspected_times++;
 
     // Apply operation
-    T value1 = field1 == "old" ? item : stoi(field1);
-    T value2 = field2 == "old" ? item : stoi(field2);
-    if (operation == '*') item = value1 * value2;
-    if (operation == '+') item = value1 + value2;
+    if (operation == '*') item = field1.get(item) * field2.get(item);
+    if (operation == '+') item = field1.get(item) + field2.get(item);
 
     return item;
   }
 
-  friend std::ostream& operator<<(std::ostream& os, const Monkey& d) {
-    return os << fmt::format("{{items.front():{}, operation:{}{}{}, test:{}, monkeys:{}:{}}}", d.items.front(), d.field1, d.operation, d.field2, d.test,
-                             d.monkey_if, d.monkey_else);
-  }
+  // friend std::ostream& operator<<(std::ostream& os, const Monkey& d) {
+  //   return os << fmt::format("{{items.front():{}, operation:{}{}{}, test:{}, monkeys:{}:{}}}", d.items.front(), d.field1, d.operation, d.field2, d.test,
+  //                            d.monkey_if, d.monkey_else);
+  // }
 };
 
 class Today : public Day {
