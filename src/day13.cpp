@@ -77,6 +77,7 @@ class ListOrNum {
   }
 
   bool operator<(const ListOrNum& other) const { return compare(*this, other) == -1; }
+  bool operator==(const ListOrNum& other) const { return compare(*this, other) == 0; }
 };
 
 class Today : public Day {
@@ -98,7 +99,21 @@ class Today : public Day {
     out << sum;
   }
 
-  virtual void part2(ostream& out) override {}
+  virtual void part2(ostream& out) override {
+    ListOrNum d1, d2;
+    stringstream("[[2]]") >> d1;
+    stringstream("[[6]]") >> d2;
+    vector<ListOrNum> packets = {d1, d2};
+    for (auto comparison : comparisons) {
+      packets.push_back(comparison.first);
+      packets.push_back(comparison.second);
+    }
+    c_sort(packets);
+    // for (auto packet : packets) out << endl << packet;
+    int idx1 = distance(packets.begin(), c_find(packets, d1)) + 1;
+    int idx2 = distance(packets.begin(), c_find(packets, d2)) + 1;
+    out << idx1 * idx2;
+  }
 };
 
 int main() {
