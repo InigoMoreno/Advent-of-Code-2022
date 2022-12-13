@@ -11,6 +11,7 @@ class Today : public Day {
  protected:
   vector<vector<int>> elevation;
   pos start, end;
+  vector<pos> possible_starts;
   uint N, M;
 
   virtual void parse(istream& in) override {
@@ -30,15 +31,19 @@ class Today : public Day {
           elevation[i + 1][j + 1] = 'z' - 'a';
         } else
           elevation[i + 1][j + 1] = lines[i][j] - 'a';
+
+        if (elevation[i + 1][j + 1] == 0) possible_starts.push_back({i + 1, j + 1});
       }
   }
   typedef pair<pos, uint> pos_steps;
 
-  virtual void part1(ostream& out) override {
+  int bfs(const vector<pos>& starts) {
     set<pos> visited;
     queue<pos_steps> q;
-    q.push(pos_steps(start, 0));
-    visited.insert(start);
+    for (pos start : starts) {
+      q.push(pos_steps(start, 0));
+      visited.insert(start);
+    }
     while (!q.empty()) {
       auto front = q.front();
       q.pop();
@@ -46,8 +51,7 @@ class Today : public Day {
       uint steps = front.second;
       // fmt::print("{}: {}\n", front, char('a' + elevation[current.x][current.y]));
       if (current == end) {
-        out << steps;
-        break;
+        return steps;
       }
       for (pos delta : vector<pos>{{0, 1}, {1, 0}, {-1, 0}, {0, -1}}) {
         pos neighbour = current + delta;
@@ -58,8 +62,12 @@ class Today : public Day {
       }
     }
   }
+  virtual void part1(ostream& out) override {
+    vector<pos> starts = {start};
+    out << bfs(starts);
+  }
 
-  virtual void part2(ostream& out) override {}
+  virtual void part2(ostream& out) override { out << bfs(possible_starts); }
 };
 
 int main() {
