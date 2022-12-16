@@ -66,30 +66,18 @@ class Today : public Day {
       }
       range_count += ranges[i].second;
     }
-    out << sum + 1 - beacons_at_Y.size() << endl;
+    out << sum + 1 - beacons_at_Y.size();
   }
 
   virtual void part2(ostream& out) override {
     int N = abs(sensorsBeacons[0].first.y) < 100 ? 20 : 4000000;
-    out << endl << "Prolog:" << endl;
-    out << "example(Z):-" << endl;
-    out << "    X in 1.." << N << "," << endl;
-    out << "    Y in 1.." << N << "," << endl;
-    out << "    I #= Y-X," << endl;
-    out << "    J #= X+Y," << endl;
     N = sensorsBeacons.size();
     vector<int> mini(N), maxi(N), minj(N), maxj(N);
+
     for (int idx = 0; idx < N; idx++) {
       pos sensor = sensorsBeacons[idx].first;
       pos beacon = sensorsBeacons[idx].second;
       int dist = (sensor - beacon).manhattan_norm();
-      // out << fmt::format("    abs(X-{})+abs(Y-{})#>{},\n\n", sensor.x, sensor.y, dist);
-      out << fmt::format("    (abs(I{:+}) #> {:<2};", -(sensor.y - sensor.x), dist);
-      // out << fmt::format("    abs(-3{:+}) #> {},\n", -(sensor.y - sensor.x), dist);
-      // out << fmt::format("    abs({}) #> {},\n", -3 - (sensor.y - sensor.x), dist);
-      // out << fmt::format("    {} #> {},\n", abs(-3 - (sensor.y - sensor.x)), dist);
-      // out << fmt::format("    {},\n\n", abs(-3 - (sensor.y - sensor.x))> dist);
-      out << fmt::format("    abs(J{:+}) #> {}),\n", -(sensor.y + sensor.x), dist);
       mini[idx] = -sensor.x + sensor.y - dist;
       maxi[idx] = -sensor.x + sensor.y + dist;
       minj[idx] = sensor.x + sensor.y - dist;
@@ -97,29 +85,28 @@ class Today : public Day {
     }
     c_sort(mini);
     c_sort(maxi);
+    c_sort(minj);
+    c_sort(maxj);
     int i, j;
     int b = 0;
     for (int a = 0; a < N; a++) {
       while (mini[a] - maxi[b] > 2) b++;
       if (mini[a] - maxi[b] == 2) {
         i = mini[a] - 1;
-        out << fmt::format("    I #= {},\n", i);
         break;
       }
     }
     int d = 0;
     for (int c = 0; c < N; c++) {
       while (minj[c] - maxj[d] > 2) d++;
-      // out << minj[c] - maxj[d] << endl;
       if (minj[c] - maxj[d] == 2) {
         j = minj[c] - 1;
-        // out << j << " !" << endl;
         break;
       }
     }
-    // fmt::print("i:{}\n", i);
-    // fmt::print("j:{}\n\n", j);
-    out << "    Z #= X*4000000+Y.";
+    long long int x = (j - i) / 2;
+    int y = (i + j) / 2;
+    out << x * 4000000 + y;
   }
 };
 
