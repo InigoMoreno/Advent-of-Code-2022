@@ -78,6 +78,11 @@ class Today : public Day {
       pos sensor = sensorsBeacons[idx].first;
       pos beacon = sensorsBeacons[idx].second;
       int dist = (sensor - beacon).manhattan_norm();
+      // Transforming to coordinates i=-x+y; j=x+y
+      // The restrictions become rectangles
+      // As there is only one solution
+      // One of these rectangles must end just two units after another starts to let a line in between
+      // This happens both for dimension i and for dimension j
       mini[idx] = -sensor.x + sensor.y - dist;
       maxi[idx] = -sensor.x + sensor.y + dist;
       minj[idx] = sensor.x + sensor.y - dist;
