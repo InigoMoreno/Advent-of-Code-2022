@@ -35,6 +35,9 @@ struct pos {
   bool operator==(const pos &other) const {
     return std::tie(x, y) == std::tie(other.x, other.y);
   }
+  int manhattan_norm() const {
+    return abs(x)+abs(y);
+  }
 };
 
 std::vector<std::string> split(const std::string &target, char c) {
