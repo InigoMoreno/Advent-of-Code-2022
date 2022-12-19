@@ -45,17 +45,24 @@ class Today : public Day {
     for (int k = 0; k != N; k++)
       for (int i = 0; i != N; i++)
         for (int j = 0; j != N; j++) dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
-    // fmt::print("{}\n", dist);
   }
 
-  int dfs(int pos, int previous_pressure, int minute, vector<bool> opened) {
-    int pressure = previous_pressure;
+  int dfs(int pos, int previous_pressure, int minutes_left, vector<bool>& opened) {
+    int total_flow = 0;
     for (int i = 0; i < N; i++) {
-      if (opened[i]) pressure += valves[i].flow;
-      else {
-        
+      if (opened[i]) total_flow += valves[i].flow;
+    }
+    int max_final_pressure = previous_pressure + total_flow * minutes_left;
+    for (int i = 0; i < N; i++) {
+      if (!opened[i] and dist[pos][i] < minutes_left and valves[i].flow > 0) {
+        opened[i] = true;
+        int time = dist[pos][i] + 1;
+        int sub_res = dfs(i, previous_pressure + total_flow * time, minutes_left - time, opened);
+        if (sub_res>max_final_pressure) max_final_pressure = sub_res;
+        opened[i] = false;
       }
     }
+    return max_final_pressure;
   }
 
   virtual void part1(ostream& out) override {
@@ -66,11 +73,8 @@ class Today : public Day {
         break;
       }
     }
-    out << start;
-
-    for (int i = 0; i < N; i++) {
-      out << fmt::format("Flow to {} is {}", valves[i].name, valves[i].flow - dist[start][i]) << endl;
-    }
+    vector<bool> opened(valves.size(), false);
+    out << dfs(start, 0, 30, opened);
   }
 
   virtual void part2(ostream& out) override {}
@@ -78,6 +82,6 @@ class Today : public Day {
 
 int main() {
   Today day;
-  day.input_path = "../input/input{}-example.txt";
+  // day.input_path = "../input/input{}-example.txt";
   day.run();
 }
