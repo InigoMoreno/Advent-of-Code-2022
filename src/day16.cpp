@@ -29,7 +29,7 @@ class Today : public Day {
       valve.tunnels = absl::StrSplit(split[1], ", ");
       valve.tunnels[0] = valve.tunnels[0].substr(valve.tunnels[0].size() - 2);
       valves.push_back(valve);
-      if (valve.name=="AA") start = valves.size()-1;
+      if (valve.name == "AA") start = valves.size() - 1;
     }
     N = valves.size();
     dist = vector<vector<int>>(N, vector<int>(N, 1000));
@@ -50,6 +50,7 @@ class Today : public Day {
   }
 
   int dfs(int pos, int previous_pressure, int minutes_left, vector<bool>& opened) {
+    opened[pos] = true;
     int total_flow = 0;
     for (int i = 0; i < N; i++) {
       if (opened[i]) total_flow += valves[i].flow;
@@ -57,13 +58,12 @@ class Today : public Day {
     int max_final_pressure = previous_pressure + total_flow * minutes_left;
     for (int i = 0; i < N; i++) {
       if (!opened[i] and dist[pos][i] < minutes_left and valves[i].flow > 0) {
-        opened[i] = true;
         int time = dist[pos][i] + 1;
         int sub_res = dfs(i, previous_pressure + total_flow * time, minutes_left - time, opened);
         if (sub_res > max_final_pressure) max_final_pressure = sub_res;
-        opened[i] = false;
       }
     }
+    opened[pos] = false;
     return max_final_pressure;
   }
 
@@ -72,11 +72,35 @@ class Today : public Day {
     out << dfs(start, 0, 30, opened);
   }
 
-  virtual void part2(ostream& out) override {}
+  int two_person_dfs(int pos, int pos_other, int previous_pressure, int minutes_left, int minutes_left_other, vector<bool>& opened) {
+    opened[pos] = true;
+    int total_flow = 0;
+    for (int i = 0; i < N; i++) {
+      if (opened[i]) total_flow += valves[i].flow;
+    }
+    int max_final_pressure = previous_pressure + total_flow * minutes_left;
+    for (int i = 0; i < N; i++) {
+      if (!opened[i] and dist[pos][i] < minutes_left and valves[i].flow > 0) {
+        int time = dist[pos][i] + 1;
+        // fmt::print("{},{},{},{},{}\n", pos_other, i, previous_pressure + total_flow * (minutes_left - minutes_left_other), minutes_left_other,
+        //            minutes_left - time);
+        int sub_res =
+            two_person_dfs(pos_other, i, previous_pressure + total_flow * (minutes_left - minutes_left_other), minutes_left_other, minutes_left - time, opened);
+        if (sub_res > max_final_pressure) max_final_pressure = sub_res;
+      }
+    }
+    opened[pos] = false;
+    return max_final_pressure;
+  }
+
+  virtual void part2(ostream& out) override {
+    vector<bool> opened(valves.size(), false);
+    out << two_person_dfs(start, start, 0, 26, 26, opened);
+  }
 };
 
 int main() {
   Today day;
-  // day.input_path = "../input/input{}-example.txt";
+  day.input_path = "../input/input{}-example.txt";
   day.run();
 }
