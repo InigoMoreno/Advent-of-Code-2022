@@ -56,10 +56,7 @@ class Today : public Day {
  protected:
   string pattern;
 
-  virtual void parse(istream& in) override {
-    pattern = streamToString(in);
-    cout << pattern << endl;
-  }
+  virtual void parse(istream& in) override { pattern = streamToString(in); }
 
   bool check_pos_piece(pos p, int piece) {
     for (int i = 0; i < 4; i++) {
@@ -91,6 +88,7 @@ class Today : public Day {
     int max_height = 0;
     while (piece < 2022) {
       for (char c : pattern) {
+        if (c != '>' and c != '<') continue;
         int dir = c == '>' ? 1 : -1;
         pos pushed_pos = p + pos({dir, 0});
         if (check_pos_piece(pushed_pos, piece % 5)) p = pushed_pos;
