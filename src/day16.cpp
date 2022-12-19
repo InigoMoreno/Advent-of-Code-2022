@@ -19,8 +19,11 @@ class Today : public Day {
   vector<Valve> valves;
   vector<vector<int>> dist;  // dist[i][j] distance between valve i and j
   int start;
+  int max_flow;
+
   virtual void parse(istream& in) override {
     string line;
+    max_flow = 0;
     while (getline(in, line) and !line.empty()) {
       Valve valve;
       vector<string> split = absl::StrSplit(line, "; ");
@@ -30,6 +33,7 @@ class Today : public Day {
       valve.tunnels[0] = valve.tunnels[0].substr(valve.tunnels[0].size() - 2);
       valves.push_back(valve);
       if (valve.name == "AA") start = valves.size() - 1;
+      max_flow+=valve.flow;
     }
     N = valves.size();
     dist = vector<vector<int>>(N, vector<int>(N, 1000));
@@ -72,10 +76,16 @@ class Today : public Day {
     out << dfs(start, 0, 30, opened);
   }
 
+  int best_part2 = 0;
+
   int two_person_dfs(int pos, int pos_other, int previous_pressure, int minutes_left, int minutes_left_other, vector<bool>& opened) {
     if (minutes_left_other > minutes_left) {
       swap(pos, pos_other);
       swap(minutes_left, minutes_left_other);
+    }
+
+    if (previous_pressure + max_flow * minutes_left < best_part2){
+      return 0;
     }
     opened[pos] = true;
     int total_flow = 0;
@@ -100,6 +110,7 @@ class Today : public Day {
       if (sub_res > max_final_pressure) max_final_pressure = sub_res;
     }
     opened[pos] = false;
+    if (max_final_pressure>best_part2) best_part2 = max_final_pressure;
     return max_final_pressure;
   }
 
