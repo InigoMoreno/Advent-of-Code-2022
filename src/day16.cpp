@@ -18,6 +18,7 @@ class Today : public Day {
   int N;
   vector<Valve> valves;
   vector<vector<int>> dist;  // dist[i][j] distance between valve i and j
+  int start;
   virtual void parse(istream& in) override {
     string line;
     while (getline(in, line) and !line.empty()) {
@@ -28,6 +29,7 @@ class Today : public Day {
       valve.tunnels = absl::StrSplit(split[1], ", ");
       valve.tunnels[0] = valve.tunnels[0].substr(valve.tunnels[0].size() - 2);
       valves.push_back(valve);
+      if (valve.name=="AA") start = valves.size()-1;
     }
     N = valves.size();
     dist = vector<vector<int>>(N, vector<int>(N, 1000));
@@ -58,7 +60,7 @@ class Today : public Day {
         opened[i] = true;
         int time = dist[pos][i] + 1;
         int sub_res = dfs(i, previous_pressure + total_flow * time, minutes_left - time, opened);
-        if (sub_res>max_final_pressure) max_final_pressure = sub_res;
+        if (sub_res > max_final_pressure) max_final_pressure = sub_res;
         opened[i] = false;
       }
     }
@@ -66,13 +68,6 @@ class Today : public Day {
   }
 
   virtual void part1(ostream& out) override {
-    int start;
-    for (int i = 0; i < N; i++) {
-      if (valves[i].name == "AA") {
-        start = i;
-        break;
-      }
-    }
     vector<bool> opened(valves.size(), false);
     out << dfs(start, 0, 30, opened);
   }
