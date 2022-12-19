@@ -35,11 +35,19 @@ vector<vector<vector<bool>>> pieces = {
         {0, 0, 0, 0},
     },
 };
-
+// clang-format off
 vector<vector<bool>> field = {
-    {1, 1, 1, 1, 1, 1}, {1, 0, 0, 0, 0, 0}, {1, 0, 0, 0, 0, 0}, {1, 0, 0, 0, 0, 0}, {1, 0, 0, 0, 0, 0},
-    {1, 0, 0, 0, 0, 0}, {1, 0, 0, 0, 0, 0}, {1, 0, 0, 0, 0, 0}, {1, 1, 1, 1, 1, 1},
+    {1, 1, 1, 1, 1, 1, 1, 1},
+    {1, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 0, 0, 0},
+    {1, 1, 1, 1, 1, 1, 1, 1},
 };
+// clang-format on
 
 class Today : public Day {
  public:
@@ -56,7 +64,7 @@ class Today : public Day {
   bool check_pos_piece(pos p, int piece) {
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
-        if (pieces[piece][i][j] and field[p.x + i][p.y + j]) {
+        if (pieces.at(piece).at(i).at(j) and field.at(p.x + i).at(p.y + j)) {
           return false;
         }
       }
@@ -68,8 +76,8 @@ class Today : public Day {
     int max_height_placed = -10;
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
-        if (pieces[piece][i][j]) {
-          field[p.x + i][p.y + j] = true;
+        if (pieces.at(piece).at(i).at(j)) {
+          field.at(p.x + i).at(p.y + j) = true;
           if (p.y + j > max_height_placed) max_height_placed = p.y + j;
         }
       }
@@ -114,6 +122,6 @@ class Today : public Day {
 
 int main() {
   Today day;
-  day.input_path = "../input/input{}-example.txt";
+  // day.input_path = "../input/input{}-example.txt";
   day.run();
 }
