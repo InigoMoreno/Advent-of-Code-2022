@@ -30,10 +30,48 @@ class Today : public Day {
       valves.push_back(valve);
     }
     N = valves.size();
-    dist = vector<vector<int>>(N, vector<int>(N, -1));
+    dist = vector<vector<int>>(N, vector<int>(N, 1000));
+    for (int i = 0; i < N; i++) {
+      for (string tunnel : valves[i].tunnels) {
+        for (int j = 0; j < N; j++) {
+          if (tunnel == valves[j].name) {
+            dist[i][j] = 1;
+            break;
+          }
+        }
+      }
+    }
+
+    for (int k = 0; k != N; k++)
+      for (int i = 0; i != N; i++)
+        for (int j = 0; j != N; j++) dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+    // fmt::print("{}\n", dist);
   }
 
-  virtual void part1(ostream& out) override {}
+  int dfs(int pos, int previous_pressure, int minute, vector<bool> opened) {
+    int pressure = previous_pressure;
+    for (int i = 0; i < N; i++) {
+      if (opened[i]) pressure += valves[i].flow;
+      else {
+        
+      }
+    }
+  }
+
+  virtual void part1(ostream& out) override {
+    int start;
+    for (int i = 0; i < N; i++) {
+      if (valves[i].name == "AA") {
+        start = i;
+        break;
+      }
+    }
+    out << start;
+
+    for (int i = 0; i < N; i++) {
+      out << fmt::format("Flow to {} is {}", valves[i].name, valves[i].flow - dist[start][i]) << endl;
+    }
+  }
 
   virtual void part2(ostream& out) override {}
 };
