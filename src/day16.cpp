@@ -73,6 +73,10 @@ class Today : public Day {
   }
 
   int two_person_dfs(int pos, int pos_other, int previous_pressure, int minutes_left, int minutes_left_other, vector<bool>& opened) {
+    if (minutes_left_other > minutes_left) {
+      swap(pos, pos_other);
+      swap(minutes_left, minutes_left_other);
+    }
     opened[pos] = true;
     int total_flow = 0;
     for (int i = 0; i < N; i++) {
@@ -84,10 +88,16 @@ class Today : public Day {
         int time = dist[pos][i] + 1;
         // fmt::print("{},{},{},{},{}\n", pos_other, i, previous_pressure + total_flow * (minutes_left - minutes_left_other), minutes_left_other,
         //            minutes_left - time);
-        int sub_res =
-            two_person_dfs(pos_other, i, previous_pressure + total_flow * (minutes_left - minutes_left_other), minutes_left_other, minutes_left - time, opened);
+        int sub_res = two_person_dfs(i, pos_other, previous_pressure + total_flow * min(minutes_left - minutes_left_other, time), minutes_left - time,
+                                     minutes_left_other, opened);
         if (sub_res > max_final_pressure) max_final_pressure = sub_res;
       }
+    }
+    if (minutes_left_other > 0) {
+      int time = minutes_left;
+      int sub_res = two_person_dfs(pos, pos_other, previous_pressure + total_flow * min(minutes_left - minutes_left_other, time), minutes_left - time,
+                                   minutes_left_other, opened);
+      if (sub_res > max_final_pressure) max_final_pressure = sub_res;
     }
     opened[pos] = false;
     return max_final_pressure;
@@ -101,6 +111,6 @@ class Today : public Day {
 
 int main() {
   Today day;
-  day.input_path = "../input/input{}-example.txt";
+  // day.input_path = "../input/input{}-example.txt";
   day.run();
 }
