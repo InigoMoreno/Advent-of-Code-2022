@@ -12,33 +12,26 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <queue>
 #include <sstream>
 #include <string>
 #include <vector>
-#include <queue>
 
-struct pos {
-  int x;
-  int y;
-  bool operator<(const pos &other) const {
-    return std::tie(x, y) < std::tie(other.x, other.y);
-  }
-  pos operator+(const pos &other) const {
-    return pos({x + other.x, y + other.y});
-  }
-  pos operator-(const pos &other) const {
-    return pos({x - other.x, y - other.y});
-  }
-  friend std::ostream &operator<<(std::ostream &os, const pos &d) {
-    return os << '(' << d.x << ',' << d.y << ')';
-  }
-  bool operator==(const pos &other) const {
-    return std::tie(x, y) == std::tie(other.x, other.y);
-  }
-  int manhattan_norm() const {
-    return abs(x)+abs(y);
-  }
+template <typename INT>
+struct POS {
+  INT x;
+  INT y;
+  bool operator<(const POS<INT> &other) const { return std::tie(x, y) < std::tie(other.x, other.y); }
+  POS<INT> operator+(const POS<INT> &other) const { return POS<INT>({x + other.x, y + other.y}); }
+  POS<INT> operator-(const POS<INT> &other) const { return POS<INT>({x - other.x, y - other.y}); }
+  friend std::ostream &operator<<(std::ostream &os, const POS<INT> &d) { return os << '(' << d.x << ',' << d.y << ')'; }
+  bool operator==(const POS<INT> &other) const { return std::tie(x, y) == std::tie(other.x, other.y); }
+  int manhattan_norm() const { return abs(x) + abs(y); }
 };
+
+typedef POS<int> pos;
+typedef POS<uint> upos;
+typedef POS<long long int> lpos;
 
 std::vector<std::string> split(const std::string &target, char c) {
   std::string temp;
