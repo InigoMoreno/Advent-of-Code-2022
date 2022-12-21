@@ -112,6 +112,6 @@ class Today : public Day {
 
 int main() {
   Today day;
-  day.input_path = "../input/input{}-example.txt";
+  // day.input_path = "../input/input{}-example.txt";
   day.run();
 }
