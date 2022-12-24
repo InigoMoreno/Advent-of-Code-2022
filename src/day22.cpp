@@ -37,7 +37,7 @@ class Today : public Day {
   vector<pos> dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
   string dir_labels = ">v<^";
 
-  pos next_pos(pos current, int dir) {
+  pair<pos, int> next_pos(pos current, int dir) {
     pos next = current + dirs[dir];
     if (next.x < 0) next.x = map.size() - 1;
     if (next.y < 0) next.y = map[next.x].size() - 1;
@@ -45,30 +45,30 @@ class Today : public Day {
     if (next.y >= map[next.x].size()) next.y = 0;
     if (map[next.x][next.y] == ' ') return next_pos(next, dir);
 
-    return next;
+    return {next, dir};
   }
 
-  virtual void part1(ostream& out) override {
+  int generic_part(){
     int dir = 0;
-    pos current = next_pos({0, 0}, dir);
+    pos current = next_pos({0, 0}, dir).first;
     for (auto [len, turn] : instructions) {
       while (len--) {
         map[current.x][current.y] = dir_labels[dir];
-        pos next = next_pos(current, dir);
+        auto [next, next_dir] = next_pos(current, dir);
         if (map[next.x][next.y] == '#') break;
         current = next;
+        dir = next_dir;
       }
       if (turn == 'R')
         dir = mod(dir + 1, 4);
       else if (turn == 'L')
         dir = mod(dir - 1, 4);
     }
-    out << (current.x + 1) * 1000 + (current.y + 1) * 4 + dir;
-    // out << endl;
-    // for (int i = 0; i < map.size(); i++) {
-    //   for (int j = 0; j < map[i].size(); j++) out << map[i][j];
-    //   out << endl;
-    // }
+    return (current.x + 1) * 1000 + (current.y + 1) * 4 + dir;
+  }
+
+  virtual void part1(ostream& out) override {
+    out << generic_part();
   }
 
   virtual void part2(ostream& out) override {}
