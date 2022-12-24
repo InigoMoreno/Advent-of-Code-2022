@@ -4,6 +4,9 @@ using namespace std;
 using namespace Eigen;
 using namespace absl;
 
+vector<pos> dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+string dir_labels = ">v<^";
+
 class Today : public Day {
  public:
   Today() : Day(22) {}
@@ -33,28 +36,24 @@ class Today : public Day {
     instructions.push_back({len, 'z'});
     // fmt::print("{}\n", instructions);
   }
-
-  vector<pos> dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-  string dir_labels = ">v<^";
-
-  pair<pos, int> next_pos(pos current, int dir) {
+  static pair<pos, int> next_pos_1(const vector<vector<char>>& map, pos current, int dir) {
     pos next = current + dirs[dir];
     if (next.x < 0) next.x = map.size() - 1;
     if (next.y < 0) next.y = map[next.x].size() - 1;
     if (next.x >= map.size()) next.x = 0;
     if (next.y >= map[next.x].size()) next.y = 0;
-    if (map[next.x][next.y] == ' ') return next_pos(next, dir);
+    if (map[next.x][next.y] == ' ') return next_pos_1(map, next, dir);
 
     return {next, dir};
   }
 
-  int generic_part(){
+  int generic_part(pair<pos,int> (*next_pos)(const vector<vector<char>>&, pos,int)){
     int dir = 0;
-    pos current = next_pos({0, 0}, dir).first;
+    pos current = next_pos(map, {0, 0}, dir).first;
     for (auto [len, turn] : instructions) {
       while (len--) {
         map[current.x][current.y] = dir_labels[dir];
-        auto [next, next_dir] = next_pos(current, dir);
+        auto [next, next_dir] = next_pos(map, current, dir);
         if (map[next.x][next.y] == '#') break;
         current = next;
         dir = next_dir;
@@ -68,7 +67,7 @@ class Today : public Day {
   }
 
   virtual void part1(ostream& out) override {
-    out << generic_part();
+    out << generic_part(next_pos_1);
   }
 
   virtual void part2(ostream& out) override {}
