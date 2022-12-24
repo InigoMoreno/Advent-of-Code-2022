@@ -4,10 +4,6 @@ using namespace std;
 using namespace Eigen;
 using namespace absl;
 
-template <typename T1, typename T2>
-T1 mod(T1 a, T2 b) {
-  return a >= 0 ? a % b : (b - abs(a % b)) % b;
-}
 
 template <typename T>
 class Node {

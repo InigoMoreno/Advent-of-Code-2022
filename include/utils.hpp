@@ -45,6 +45,11 @@ std::vector<std::string> split(const std::string &target, char c) {
   return result;
 }
 
+template <typename T1, typename T2>
+T1 mod(T1 a, T2 b) {
+  return a >= 0 ? a % b : (b - abs(a % b)) % b;
+}
+
 std::string streamToString(std::istream &t) {
   t.seekg(0, std::ios::end);
   size_t size = t.tellg();
