@@ -47,7 +47,18 @@ class Today : public Day {
     return {next, dir};
   }
 
-  int generic_part(pair<pos,int> (*next_pos)(const vector<vector<char>>&, pos,int)){
+  static pair<pos, int> next_pos_2(const vector<vector<char>>& map, pos current, int dir) {
+    pos next = current + dirs[dir];
+    if (next.x < 0) next.x = map.size() - 1;
+    if (next.y < 0) next.y = map[next.x].size() - 1;
+    if (next.x >= map.size()) next.x = 0;
+    if (next.y >= map[next.x].size()) next.y = 0;
+    if (map[next.x][next.y] == ' ') return next_pos_2(map, next, dir);
+
+    return {next, dir};
+  }
+
+  int generic_part(pair<pos, int> (*next_pos)(const vector<vector<char>>&, pos, int)) {
     int dir = 0;
     pos current = next_pos(map, {0, 0}, dir).first;
     for (auto [len, turn] : instructions) {
@@ -66,11 +77,9 @@ class Today : public Day {
     return (current.x + 1) * 1000 + (current.y + 1) * 4 + dir;
   }
 
-  virtual void part1(ostream& out) override {
-    out << generic_part(next_pos_1);
-  }
+  virtual void part1(ostream& out) override { out << generic_part(next_pos_1); }
 
-  virtual void part2(ostream& out) override {}
+  virtual void part2(ostream& out) override { out << generic_part(next_pos_2); }
 };
 
 int main() {
