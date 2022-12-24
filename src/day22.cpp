@@ -1,3 +1,5 @@
+#include <assert.h>
+
 #include <utils.hpp>
 
 using namespace std;
@@ -47,13 +49,99 @@ class Today : public Day {
     return {next, dir};
   }
 
+  // clang-format off
+  // hardcoding the transitions for this cube
+  //  y->
+  // x  12
+  // |  3
+  // v 45
+  //   6
+  // clang-format on
+
+  // >v<^
   static pair<pos, int> next_pos_2(const vector<vector<char>>& map, pos current, int dir) {
     pos next = current + dirs[dir];
-    if (next.x < 0) next.x = map.size() - 1;
-    if (next.y < 0) next.y = map[next.x].size() - 1;
-    if (next.x >= map.size()) next.x = 0;
-    if (next.y >= map[next.x].size()) next.y = 0;
-    if (map[next.x][next.y] == ' ') return next_pos_2(map, next, dir);
+    if (next.x < 0) {
+      if (next.y < 50) {
+        // going up from 4, should enter 3 from left
+        next.x = (50 + next.y);
+        next.y = 0;
+        dir = 0;
+      } else if (next.y < 100) {
+        // going up from 1, should enter 6 from left
+        next.x = (100 + next.y);
+        next.y = 0;
+        dir = 0;
+      } else {
+        // going up from 2, should enter 6 from down
+        next.x = map.size() - 1;
+        next.y = next.y - 100;
+      }
+    }
+    if (next.y < 0) {
+      if (next.x < 50) {
+        // going left from 1, should enter 4 from left
+        next.x = (149 - next.x);
+        next.y = 0;
+        dir = 0;
+      } else if (next.x < 100) {
+        // going left from 3, should enter 4 from up
+        next.y = next.x - 50;
+        next.x = 100;
+        dir = 1;
+      } else if (next.x < 150) {
+        // going left from 4, should enter 1 from left
+        next.x = (149 - next.x);
+        next.y = 0;
+        dir = 0;
+      } else {
+        // going left from 6, should enter 1 from up
+        next.y = next.x - 100;
+        next.x = 0;
+        dir = 1;
+      }
+    }
+    if (next.x >= map.size()) {
+      if (next.y < 50) {
+        // going down from 6, should enter 2 from up
+        next.x = 0;
+        next.y = next.y + 100;
+      } else if (next.y < 100) {
+        // going down from 5 should enter 6 from right
+        next.x = next.y + 100;
+        next.y = 49;
+        dir = 2;
+      } else {
+        // going down from 2 should enter 3 from right
+        next.x = next.y - 50;
+        next.y = 99;
+        dir = 2;
+      }
+    }
+    if (next.y >= map[next.x].size()) {
+      if (next.x < 50) {
+        // going right from 2, should go to 5 from right
+        next.x = (149 - next.x);
+        next.y = 99;
+        dir = 2;
+      } else if (next.x < 100) {
+        // going right from 3, should enter 2 from down
+        next.y = next.x + 50;
+        next.x = 49;
+        dir = 3;
+      } else if (next.x < 150) {
+        // going right from 5, should enter 2 from right
+        next.x = (149 - next.x);
+        next.y = 149;
+        dir = 2;
+      } else {
+        // going right from 6, should enter 5 from down
+        next.y = next.x - 100;
+        next.x = 149;
+        dir = 3;
+      }
+    }
+    if (map.at(next.x).at(next.y) == ' ') return next_pos_2(map, next, dir);
 
     return {next, dir};
   }
