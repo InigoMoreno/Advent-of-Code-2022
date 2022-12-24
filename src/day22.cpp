@@ -34,11 +34,11 @@ class Today : public Day {
     // fmt::print("{}\n", instructions);
   }
 
-  vector<lpos> dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+  vector<pos> dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
   string dir_labels = ">v<^";
 
-  lpos next_pos(lpos current, int dir) {
-    lpos next = current + dirs[dir];
+  pos next_pos(pos current, int dir) {
+    pos next = current + dirs[dir];
     if (next.x < 0) next.x = map.size() - 1;
     if (next.y < 0) next.y = map[next.x].size() - 1;
     if (next.x >= map.size()) next.x = 0;
@@ -50,11 +50,11 @@ class Today : public Day {
 
   virtual void part1(ostream& out) override {
     int dir = 0;
-    lpos current = next_pos({0, 0}, dir);
+    pos current = next_pos({0, 0}, dir);
     for (auto [len, turn] : instructions) {
       while (len--) {
         map[current.x][current.y] = dir_labels[dir];
-        lpos next = next_pos(current, dir);
+        pos next = next_pos(current, dir);
         if (map[next.x][next.y] == '#') break;
         current = next;
       }
