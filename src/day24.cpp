@@ -67,26 +67,26 @@ class Today : public Day {
       }
       reachable = next_reachable;
 
-#if DEBUG
-      out << round << endl;
+#ifndef NDEBUG
+      cout << round << endl;
       for (int i = 0; i < M; i++) {
         for (int j = 0; j < N; j++) {
           if (reachable.count({i, j}))
-            out << 'E';
+            cout << 'E';
           else if (blizzards.count({i, j}) > 1)
-            out << blizzards.count({i, j});
+            cout << blizzards.count({i, j});
           else if (blizzards.count(pos({i, j})) == 1) {
             pos p = blizzards.equal_range({i, j}).first->second;
-            if (p == pos({0, 1})) out << '>';
-            if (p == pos({0, -1})) out << '<';
-            if (p == pos({1, 0})) out << 'v';
-            if (p == pos({-1, 0})) out << '^';
+            if (p == pos({0, 1})) cout << '>';
+            if (p == pos({0, -1})) cout << '<';
+            if (p == pos({1, 0})) cout << 'v';
+            if (p == pos({-1, 0})) cout << '^';
           } else if (walls.count({i, j}))
-            out << "#";
+            cout << "#";
           else
-            out << '.';
+            cout << '.';
         }
-        out << endl;
+        cout << endl;
       }
 #endif
     }
