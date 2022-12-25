@@ -1,17 +1,15 @@
 #include <stack>
 #include <utils.hpp>
 
-using std::pair;
-using std::string;
-using std::vector;
+using namespace std;
 
 class Today : public Day {
  public:
   Today() : Day(5) {}
 
  protected:
-  typedef std::tuple<uint, uint, uint> Instruction;
-  vector<std::stack<char>> stacks;
+  typedef tuple<uint, uint, uint> Instruction;
+  vector<stack<char>> stacks;
   vector<Instruction> instructions;
 
   virtual void parse(std::istream& in) override {
@@ -36,16 +34,13 @@ class Today : public Day {
     string move, from, to;
     int a, b, c;
     while (ss >> move >> a >> from >> b >> to >> c) {
-      instructions.push_back(Instruction(a, b, c));
+      instructions.push_back(Instruction(a, b - 1, c - 1));
     }
   }
 
   virtual void part1(std::ostream& out) override {
     vector<std::stack<char>> stacks_copy = stacks;
-    for (Instruction instruction : instructions) {
-      uint times = std::get<0>(instruction);
-      uint i = std::get<1>(instruction) - 1;
-      uint j = std::get<2>(instruction) - 1;
+    for (auto [times, i, j] : instructions) {
       while (times--) {
         stacks_copy[j].push(stacks_copy[i].top());
         stacks_copy[i].pop();
@@ -60,10 +55,7 @@ class Today : public Day {
 
   virtual void part2(std::ostream& out) override {
     vector<std::stack<char>> stacks_copy = stacks;
-    for (Instruction instruction : instructions) {
-      uint times = std::get<0>(instruction);
-      uint i = std::get<1>(instruction) - 1;
-      uint j = std::get<2>(instruction) - 1;
+    for (auto [times, i, j] : instructions) {
       std::stack<char> temp;
       while (times--) {
         temp.push(stacks_copy[i].top());

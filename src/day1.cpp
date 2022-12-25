@@ -5,8 +5,8 @@
 #include <utils.hpp>
 
 using namespace std;
-using namespace Eigen;
-using namespace absl;
+// using namespace Eigen;
+// using namespace absl;
 
 class Today : public Day {
  public:
@@ -16,12 +16,12 @@ class Today : public Day {
   vector<int> sums;
 
   virtual void parse(istream& in) override {
-    while (in) sums.push_back(eigenRead<ArrayXi>(in, ' ').sum());
+    while (in) sums.push_back(eigenRead<Eigen::ArrayXi>(in, ' ').sum());
   }
-  virtual void part1(ostream& out) override { out << *c_max_element(sums); }
+  virtual void part1(ostream& out) override { out << *absl::c_max_element(sums); }
 
   virtual void part2(ostream& out) override {
-    c_nth_element(sums, sums.begin() + 2, greater<int>{});
+    absl::c_nth_element(sums, sums.begin() + 2, greater{});
     out << sums[0] + sums[1] + sums[2];
   }
 };

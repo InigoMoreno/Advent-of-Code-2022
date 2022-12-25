@@ -15,7 +15,7 @@ class Today : public Day {
     int a, b, c, d;
     char dash, comma;
     while (in >> a >> dash >> b >> comma >> c >> dash >> d) {
-      assignments.push_back(pair<range, range>(range(a, b), range(c, d)));
+      assignments.push_back({{a,b},{c,d}});
     }
   }
 
@@ -24,8 +24,8 @@ class Today : public Day {
 
   virtual void part1(ostream& out) override {
     uint count = 0;
-    for (auto assignment : assignments) {
-      if (fully_contains(assignment.first, assignment.second) or fully_contains(assignment.second, assignment.first)) count += 1;
+    for (const auto& [a, b] : assignments) {
+      if (fully_contains(a, b) or fully_contains(b, a)) count += 1;
     }
     out << count;
   }
@@ -35,8 +35,8 @@ class Today : public Day {
 
   virtual void part2(ostream& out) override {
     uint count = 0;
-    for (auto assignment : assignments) {
-      if (overlaps(assignment.first, assignment.second) or overlaps(assignment.second, assignment.first)) count += 1;
+    for (const auto& [a, b] : assignments) {
+      if (overlaps(a, b) or overlaps(b, a)) count += 1;
     }
     out << count;
   }

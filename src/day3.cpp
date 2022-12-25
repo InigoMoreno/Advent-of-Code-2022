@@ -1,15 +1,8 @@
-#include <absl/algorithm/container.h>
-#include <absl/strings/str_split.h>
-#include <fmt/ranges.h>
-
-#include <algorithm>
-#include <map>
 #include <utils.hpp>
-#include <vector>
 
 using namespace std;
-using namespace Eigen;
-using namespace absl;
+// using namespace Eigen;
+// using namespace absl;
 
 class Today : public Day {
  public:
@@ -29,7 +22,7 @@ class Today : public Day {
     set<char> left_set(left.begin(), left.end());
     set<char> right_set(right.begin(), right.end());
     string res;
-    c_set_intersection(left_set, right_set, back_inserter(res));
+    absl::c_set_intersection(left_set, right_set, back_inserter(res));
     return res;
   }
 
@@ -37,9 +30,9 @@ class Today : public Day {
 
   virtual void part1(ostream& out) override {
     int sum = 0;
-    for (auto sack : sacks) {
-      pair<string, string> split = absl::StrSplit(sack, absl::ByLength(sack.size() / 2));
-      string intersection = find_intersection(split.first, split.second);
+    for (const auto& sack : sacks) {
+      vector<string> split = absl::StrSplit(sack, absl::ByLength(sack.size() / 2));
+      string intersection = find_intersection(split[0], split[1]);
       sum += score(intersection[0]);
     }
     out << sum;

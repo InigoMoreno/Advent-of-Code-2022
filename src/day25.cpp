@@ -46,7 +46,7 @@ class Today : public Day {
   virtual void parse(istream& in) override { snafus = absl::StrSplit(streamToString(in), "\n", absl::SkipEmpty()); }
 
   virtual void part1(ostream& out) override {
-    Snafu<long long int> sum = 0;
+    Snafu sum = 0ll;
     for (string snafu : snafus) sum += snafu;
     out << sum;
   }
