@@ -7,6 +7,7 @@
 #include <fmt/ranges.h>
 
 #include <algorithm>
+#include <concepts>
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
 #include <fstream>
@@ -17,7 +18,7 @@
 #include <string>
 #include <vector>
 
-template <typename INT>
+template <std::integral INT>
 struct POS {
   INT x;
   INT y;
