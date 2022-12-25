@@ -95,7 +95,12 @@ class Today : public Day {
     out << generic_part({0, 1}, {M - 1, N - 2}, blizzards);
   }
 
-  virtual void part2(ostream& out) override {}
+  virtual void part2(ostream& out) override {
+    multimap<pos, pos> blizzards = blizzards_start;
+    pos start = {0, 1};
+    pos goal = {M - 1, N - 2};
+    out << generic_part(start, goal, blizzards) + generic_part(goal, start, blizzards) + generic_part(start, goal, blizzards);
+  }
 };
 
 int main() {
