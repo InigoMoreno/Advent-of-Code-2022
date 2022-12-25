@@ -15,11 +15,10 @@ INT snafuToDecimal(string snafu) {
   return decimal;
 }
 
-string lookup = "=-012";
 template <typename INT>
 string decimalToSnafu(INT decimal) {
   auto [q, r] = std::div(decimal + 2, (INT)5);
-  return (q ? decimalToSnafu(q) : "") + lookup[r];
+  return (q ? decimalToSnafu(q) : "") + "=-012"[r];
 }
 
 template <typename INT>
@@ -28,12 +27,12 @@ class Snafu {
   mutable INT _decimal;
 
  public:
-  Snafu(INT decimal) : _decimal(decimal){};T
+  Snafu(INT decimal) : _decimal(decimal){};
   Snafu(string snafu) : _decimal(snafuToDecimal<INT>(snafu)){};
   const Snafu& operator+=(const Snafu& other) const {
-    this->_decimal =  this->_decimal + other._decimal;
+    this->_decimal = this->_decimal + other._decimal;
     return *this;
-   }
+  }
   friend std::ostream& operator<<(std::ostream& os, const Snafu& d) { return os << decimalToSnafu(d._decimal); }
 };
 
