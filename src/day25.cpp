@@ -8,8 +8,7 @@ map<char, int> table = {
     {'=', -2}, {'-', -1}, {'0', 0}, {'1', 1}, {'2', 2},
 };
 
-typedef long long int INT;
-
+template <typename INT>
 INT snafuToDecimal(string snafu) {
   INT decimal = 0;
   for (int i = 0; i < snafu.size(); i++) decimal += table[snafu[snafu.size() - 1 - i]] * pow(5, i);
@@ -17,18 +16,20 @@ INT snafuToDecimal(string snafu) {
 }
 
 string lookup = "=-012";
+template <typename INT>
 string decimalToSnafu(INT decimal) {
   auto [q, r] = std::div(decimal + 2, (INT)5);
   return (q ? decimalToSnafu(q) : "") + lookup[r];
 }
 
+template <typename INT>
 class Snafu {
  public:
   mutable INT _decimal;
 
  public:
-  Snafu(INT decimal) : _decimal(decimal){};
-  Snafu(string snafu) : _decimal(snafuToDecimal(snafu)){};
+  Snafu(INT decimal) : _decimal(decimal){};T
+  Snafu(string snafu) : _decimal(snafuToDecimal<INT>(snafu)){};
   const Snafu& operator+=(const Snafu& other) const {
     this->_decimal =  this->_decimal + other._decimal;
     return *this;
@@ -45,7 +46,7 @@ class Today : public Day {
   virtual void parse(istream& in) override { snafus = absl::StrSplit(streamToString(in), "\n", absl::SkipEmpty()); }
 
   virtual void part1(ostream& out) override {
-    Snafu sum = 0;
+    Snafu<long long int> sum = 0;
     for (string snafu : snafus) sum += snafu;
     out << sum;
   }
