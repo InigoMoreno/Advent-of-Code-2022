@@ -37,13 +37,11 @@ class Today : public Day {
   }
 
   vector<pos> dirs = {{0, 0}, {0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-
-  virtual void part1(ostream& out) override {
-    multimap<pos, pos> blizzards = blizzards_start;
+  int generic_part(pos start, pos goal, multimap<pos, pos>& blizzards) {
     set<pos> reachable;
-    reachable.insert({0, 1});
+    reachable.insert(start);
     int round = 0;
-    while (reachable.count({M - 1, N - 2}) == 0) {
+    while (reachable.count(goal) == 0) {
       round++;
       multimap<pos, pos> next_blizzards;
       for (auto [current, dir] : blizzards) {
@@ -90,7 +88,11 @@ class Today : public Day {
       }
 #endif
     }
-    out << round;
+    return round;
+  }
+  virtual void part1(ostream& out) override {
+    multimap<pos, pos> blizzards = blizzards_start;
+    out << generic_part({0, 1}, {M - 1, N - 2}, blizzards);
   }
 
   virtual void part2(ostream& out) override {}
